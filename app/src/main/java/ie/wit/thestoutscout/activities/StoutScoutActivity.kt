@@ -25,6 +25,7 @@ class StoutScoutActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             pub.title = binding.stoutscoutTitle.text.toString()
+            pub.location = binding.location.text.toString()
             if (pub.title.isNotEmpty()) {
                 pubs.add(pub.copy())
                 i("add Button Pressed: ${pub}")
