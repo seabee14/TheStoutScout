@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">The Stout Scout</string>
+    <string name="button_addPub">Add Pub</string>
+    <string name="hint_stoutscoutTitle">Pub Title</string>
 </resources>
