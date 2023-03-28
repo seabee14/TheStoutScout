@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.thestoutscout.R
 import ie.wit.thestoutscout.adapters.PubAdapter
+import ie.wit.thestoutscout.adapters.PubListener
 import ie.wit.thestoutscout.databinding.ActivityPubListBinding
 import ie.wit.thestoutscout.main.MainApp
+import ie.wit.thestoutscout.models.PubModel
 
-class PubListActivity : AppCompatActivity() {
+class PubListActivity : AppCompatActivity(), PubListener {
 
     lateinit var app: MainApp                              //retrieving and storing a reference to the main app
     private lateinit var binding: ActivityPubListBinding
@@ -27,7 +29,8 @@ class PubListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PubAdapter(app.pubs)
+        //binding.recyclerView.adapter = PubAdapter(app.pubs)
+        binding.recyclerView.adapter = PubAdapter(app.pubs.findAll(), this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -44,6 +47,13 @@ class PubListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onPubClick(pub: PubModel) {
+        val launcherIntent = Intent(this, StoutScoutActivity::class.java)
+        launcherIntent.putExtra("pub_edit", pub)
+        startActivityForResult(launcherIntent,0)
+    }
+
 
 }
 

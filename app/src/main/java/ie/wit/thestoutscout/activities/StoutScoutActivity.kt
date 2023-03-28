@@ -26,15 +26,18 @@ class StoutScoutActivity : AppCompatActivity() {
 
     i("StoutScout Activity started...")
 
+        if (intent.hasExtra("pub_edit")) {                        //read back the pubs added and place its title/location into the view controls
+            pub = intent.extras?.getParcelable("pub_edit")!!
+            binding.stoutscoutTitle.setText(pub.title)
+            binding.location.setText(pub.location)
+        }
+
         binding.btnAdd.setOnClickListener() {
             pub.title = binding.stoutscoutTitle.text.toString()
             pub.location = binding.location.text.toString()
             if (pub.title.isNotEmpty()) {
-                app.pubs.add(pub.copy())
-                i("add Button Pressed: ${pub}")
-                for (i in app.pubs.indices) {
-                    i("Pub[$i]:${this.app.pubs[i]}")
-                }
+                //app.pubs.add(pub.copy())
+                app.pubs.create(pub.copy())
                 setResult(RESULT_OK)
                 finish()
             }

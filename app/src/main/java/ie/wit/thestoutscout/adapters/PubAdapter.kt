@@ -6,7 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ie.wit.thestoutscout.databinding.CardPubBinding
 import ie.wit.thestoutscout.models.PubModel
 
-class PubAdapter constructor(private var pubs: List<PubModel>) :
+
+interface PubListener {
+    fun onPubClick(pub: PubModel)
+}
+
+class PubAdapter constructor(private var pubs: List<PubModel>,
+                             private val listener: PubListener) :
     RecyclerView.Adapter<PubAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -17,7 +23,7 @@ class PubAdapter constructor(private var pubs: List<PubModel>) :
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val pub = pubs[holder.adapterPosition]
-        holder.bind(pub)
+        holder.bind(pub, listener)
     }
 
     override fun getItemCount(): Int = pubs.size
@@ -25,9 +31,10 @@ class PubAdapter constructor(private var pubs: List<PubModel>) :
     class MainHolder(private val binding : CardPubBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(pub: PubModel) {
+        fun bind(pub: PubModel, listener: PubListener) {
             binding.pubTitle.text = pub.title
             binding.location.text = pub.location
+            binding.root.setOnClickListener { listener.onPubClick(pub)}
         }
     }
 }
