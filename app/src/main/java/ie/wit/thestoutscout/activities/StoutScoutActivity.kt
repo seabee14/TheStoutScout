@@ -1,12 +1,17 @@
 package ie.wit.thestoutscout.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.wit.thestoutscout.R
 import ie.wit.thestoutscout.databinding.ActivityStoutscoutBinding
+import ie.wit.thestoutscout.helpers.showImagePicker
 import ie.wit.thestoutscout.main.MainApp
 import ie.wit.thestoutscout.models.PubModel
 import timber.log.Timber.i
@@ -16,6 +21,8 @@ class StoutScoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoutscoutBinding
     var pub = PubModel()
     lateinit var app: MainApp
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +41,9 @@ class StoutScoutActivity : AppCompatActivity() {
             binding.stoutscoutTitle.setText(pub.title)
             binding.location.setText(pub.location)
             binding.btnAdd.setText(R.string.save_pub)
+            Picasso.get()
+                .load(pub.image)
+                .into(binding.pubImage)
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -53,8 +63,14 @@ class StoutScoutActivity : AppCompatActivity() {
             setResult(RESULT_OK)
             finish()
             }
+
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
         }
 
+        registerImagePickerCallback()
+
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -69,4 +85,24 @@ class StoutScoutActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            pub.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(pub.image)
+                                .into(binding.pubImage)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
 }

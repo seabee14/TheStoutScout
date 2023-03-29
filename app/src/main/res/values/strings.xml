@@ -7,6 +7,6 @@
     <string name="menu_cancelPub">Cancel</string>
     <string name="enter_pub_title"> Please enter a Pub Title </string>
     <string name="save_pub"> Save Pub </string>
-
-
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_pub_image">Select pub image</string>
 </resources>
