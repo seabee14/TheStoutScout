@@ -27,6 +27,7 @@ class PubMemStore : PubStore {
         if (foundPub != null) {
             foundPub.title = pub.title
             foundPub.location = pub.location
+            foundPub.image = pub.image
             logAll()
         }
     }

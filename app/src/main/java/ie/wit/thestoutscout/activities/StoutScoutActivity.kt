@@ -1,6 +1,7 @@
 package ie.wit.thestoutscout.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -15,7 +16,6 @@ import ie.wit.thestoutscout.helpers.showImagePicker
 import ie.wit.thestoutscout.main.MainApp
 import ie.wit.thestoutscout.models.PubModel
 import timber.log.Timber.i
-import timber.log.Timber
 
 class StoutScoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoutscoutBinding
@@ -41,9 +41,12 @@ class StoutScoutActivity : AppCompatActivity() {
             binding.stoutscoutTitle.setText(pub.title)
             binding.location.setText(pub.location)
             binding.btnAdd.setText(R.string.save_pub)
-            Picasso.get()
+            Picasso.get()                                       //display image
                 .load(pub.image)
                 .into(binding.pubImage)
+            if (pub.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_pub_image)
+            }
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -98,6 +101,7 @@ class StoutScoutActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(pub.image)
                                 .into(binding.pubImage)
+                            binding.chooseImage.setText(R.string.change_pub_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
