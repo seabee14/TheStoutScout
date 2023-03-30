@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ie.wit.thestoutscout">
 
+
     <application
         android:name=".main.MainApp"
         android:allowBackup="true"
@@ -10,15 +11,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheStoutScout">
-        <activity android:name=".activities.PubListActivity"
-                                  android:exported="true">
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCqQ91apeUy9e_5YFraikKXLw_0F0_I4vs" />
+
+        <activity
+            android:name=".activities.MapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_map" />
+        <activity
+            android:name=".activities.PubListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.StoutScoutActivity">
-        </activity>
+        <activity android:name=".activities.StoutScoutActivity"></activity>
     </application>
 
 </manifest>

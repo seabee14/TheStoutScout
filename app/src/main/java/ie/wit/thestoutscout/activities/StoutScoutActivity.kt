@@ -14,6 +14,7 @@ import ie.wit.thestoutscout.R
 import ie.wit.thestoutscout.databinding.ActivityStoutscoutBinding
 import ie.wit.thestoutscout.helpers.showImagePicker
 import ie.wit.thestoutscout.main.MainApp
+import ie.wit.thestoutscout.models.Location
 import ie.wit.thestoutscout.models.PubModel
 import timber.log.Timber.i
 
@@ -22,6 +23,8 @@ class StoutScoutActivity : AppCompatActivity() {
     var pub = PubModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,11 +70,26 @@ class StoutScoutActivity : AppCompatActivity() {
             finish()
             }
 
+        binding.pubLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
+
+
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
 
+
+        binding.pubLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+
+
         registerImagePickerCallback()
+        registerMapCallback()
 
     }
 
@@ -88,6 +106,7 @@ class StoutScoutActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -108,5 +127,13 @@ class StoutScoutActivity : AppCompatActivity() {
                 }
             }
     }
+
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
 
 }
