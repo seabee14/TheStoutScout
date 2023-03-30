@@ -3,6 +3,7 @@ package ie.wit.thestoutscout.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.wit.thestoutscout.databinding.CardPubBinding
 import ie.wit.thestoutscout.models.PubModel
 
@@ -34,6 +35,7 @@ class PubAdapter constructor(private var pubs: List<PubModel>,
         fun bind(pub: PubModel, listener: PubListener) {
             binding.pubTitle.text = pub.title
             binding.location.text = pub.location
+            Picasso.get().load(pub.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onPubClick(pub)}
         }
     }
