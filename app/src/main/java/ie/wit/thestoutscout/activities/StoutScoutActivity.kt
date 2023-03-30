@@ -22,9 +22,9 @@ class StoutScoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoutscoutBinding
     var pub = PubModel()
     lateinit var app: MainApp
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-
+    private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    var location = Location(52.245696, -7.139102, 15f)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class StoutScoutActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
 
-    i("StoutScout Activity started...")
+        i("StoutScout Activity started...")
 
         if (intent.hasExtra("pub_edit")) {                        //read back the pubs added and place its title/location into the view controls
             edit = true
@@ -59,7 +59,7 @@ class StoutScoutActivity : AppCompatActivity() {
                 Snackbar
                     .make(it, R.string.enter_pub_title, Snackbar.LENGTH_LONG)
                     .show()
-            }else {
+            } else {
                 if (edit) {
                     app.pubs.update(pub.copy())
                 } else {
@@ -68,10 +68,10 @@ class StoutScoutActivity : AppCompatActivity() {
             }
             setResult(RESULT_OK)
             finish()
-            }
+        }
 
         binding.pubLocation.setOnClickListener {
-            i ("Set Location Pressed")
+            i("Set Location Pressed")
         }
 
 
@@ -81,7 +81,6 @@ class StoutScoutActivity : AppCompatActivity() {
 
 
         binding.pubLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -97,7 +96,8 @@ class StoutScoutActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_pub, menu)
         return super.onCreateOptionsMenu(menu)
- }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
@@ -112,7 +112,7 @@ class StoutScoutActivity : AppCompatActivity() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
-                when(result.resultCode){
+                when (result.resultCode) {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
@@ -123,7 +123,8 @@ class StoutScoutActivity : AppCompatActivity() {
                             binding.chooseImage.setText(R.string.change_pub_image)
                         } // end of if
                     }
-                    RESULT_CANCELED -> { } else -> { }
+                    RESULT_CANCELED -> {}
+                    else -> {}
                 }
             }
     }
@@ -132,8 +133,20 @@ class StoutScoutActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> {}
+                    else -> {}
+                }
+            }
+
+
     }
-
-
 }
