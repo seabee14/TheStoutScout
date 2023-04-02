@@ -24,7 +24,7 @@ class StoutScoutActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    var location = Location(52.245696, -7.139102, 15f)
+    // var location = Location(52.245696, -7.139102, 15f)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +81,12 @@ class StoutScoutActivity : AppCompatActivity() {
 
 
         binding.pubLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (pub.zoom != 0f) {
+                location.lat =  pub.lat
+                location.lng = pub.lng
+                location.zoom = pub.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -138,8 +144,11 @@ class StoutScoutActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            pub.lat = location.lat
+                            pub.lng = location.lng
+                            pub.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> {}

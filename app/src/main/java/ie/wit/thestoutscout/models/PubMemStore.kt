@@ -28,6 +28,9 @@ class PubMemStore : PubStore {
             foundPub.title = pub.title
             foundPub.location = pub.location
             foundPub.image = pub.image
+            foundPub.lat = pub.lat
+            foundPub.lng = pub.lng
+            foundPub.zoom = pub.zoom
             logAll()
         }
     }
