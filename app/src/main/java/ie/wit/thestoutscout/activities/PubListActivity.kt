@@ -33,7 +33,7 @@ class PubListActivity : AppCompatActivity(), PubListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PubAdapter(app.pubs.findAll(), this)
+        loadPubs()
 
         registerRefreshCallback()
     }
@@ -62,10 +62,16 @@ class PubListActivity : AppCompatActivity(), PubListener {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadPubs() }
     }
 
+    private fun loadPubs() {
+        showPubs(app.pubs.findAll())
+    }
 
-
+    fun showPubs (pubs: List<PubModel>) {
+        binding.recyclerView.adapter = PubAdapter(pubs, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
 }
 
