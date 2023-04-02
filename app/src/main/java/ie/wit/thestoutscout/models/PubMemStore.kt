@@ -22,6 +22,11 @@ class PubMemStore : PubStore {
         logAll()
     }
 
+    override fun delete(pub: PubModel) {
+        pubs.remove(pub)
+    }
+
+
     override fun update(pub: PubModel) {
         var foundPub: PubModel? = pubs.find { p -> p.id == pub.id }
         if (foundPub != null) {
@@ -34,6 +39,8 @@ class PubMemStore : PubStore {
             logAll()
         }
     }
+
+
 
     fun logAll() {
         pubs.forEach{ i("${it}") }

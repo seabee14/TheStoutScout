@@ -40,9 +40,25 @@ class PubJSONStore(private val context: Context) : PubStore {
         serialize()
     }
 
+    override fun delete(pub: PubModel) {
+        pubs.remove(pub)
+        serialize()
+    }
+
+
 
     override fun update(pub: PubModel) {
-        // todo
+        val pubsList = findAll() as ArrayList<PubModel>
+        var foundPub: PubModel? = pubsList.find { p -> p.id == pub.id }
+        if (foundPub != null) {
+            foundPub.title = pub.title
+            foundPub.location = pub.location
+            foundPub.image = pub.image
+            foundPub.lat = pub.lat
+            foundPub.lng = pub.lng
+            foundPub.zoom = pub.zoom
+        }
+        serialize()
     }
 
     private fun serialize() {
