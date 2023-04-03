@@ -45,6 +45,7 @@ class StoutScoutActivity : AppCompatActivity() {
             pub = intent.extras?.getParcelable("pub_edit")!!
             binding.stoutscoutTitle.setText(pub.title)
             binding.location.setText(pub.location)
+            binding.ratingBar.setRating(pub.rating.toFloat())
             binding.btnAdd.setText(R.string.save_pub)
             Picasso.get()                                       //display image
                 .load(pub.image)
@@ -57,6 +58,7 @@ class StoutScoutActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             pub.title = binding.stoutscoutTitle.text.toString()
             pub.location = binding.location.text.toString()
+            pub.rating = binding.ratingBar.rating.toString()
             if (pub.title.isEmpty()) {
                 Snackbar
                     .make(it, R.string.enter_pub_title, Snackbar.LENGTH_LONG)
