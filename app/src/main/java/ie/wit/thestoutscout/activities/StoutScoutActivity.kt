@@ -30,7 +30,7 @@ class StoutScoutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        edit = true
+        //edit = true
         binding = ActivityStoutscoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
